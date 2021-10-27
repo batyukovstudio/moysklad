@@ -1,7 +1,7 @@
 {
-  "name": "cdekmarketteam/moysklad",
+  "name": "batyukovstudio/moysklad",
   "description": "PHP SDK Moysklad API 1.2",
-  "homepage": "https://github.com/cdekmarketteam/moysklad",
+  "homepage": "https://github.com/batyukovstudio/moysklad",
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -14,7 +14,12 @@
       "name": "Viktor Fursenko",
       "email": "va.fursenko@yandex.ru",
       "role": "developer"
-    }
+    },
+      {
+          "name": "Eugene Batyukov",
+          "email": "eugene@batyukov.ru",
+          "role": "developer"
+      }
   ],
   "require": {
     "php": ">=7.3",
