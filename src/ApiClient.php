@@ -44,8 +44,14 @@ class ApiClient
      * @param RequestSenderInterface|null $client
      * @throws \Exception
      */
-    public function __construct(string $host, bool $forceHttps, array $credentials, RequestSenderInterface $client = null)
+    public function __construct(string $host, bool $forceHttps, array $credentials = null, RequestSenderInterface $client = null)
     {
+        if ($credentials === null) {
+            $credentials['login'] = config('services.moysklad.login');
+            $credentials['password'] = config('services.moysklad.password');
+            $credentials['token'] = config('services.moysklad.token');
+        }
+
         if ($this->isInvalidCredentials($credentials)) {
             throw new \Exception("Credential login, password or token must be set!");
         }
@@ -63,11 +69,11 @@ class ApiClient
             if ($this->startsWith($host, "http://")) {
                 $host = str_replace("http://", "https://", $host);
             } elseif (!$this->startsWith($host, "https://")) {
-                $host = "https://".$host;
+                $host = "https://" . $host;
             }
         } else {
             if (!$this->startsWith($host, "https://") && !$this->startsWith($host, "http://")) {
-                $host = "http://".$host;
+                $host = "http://" . $host;
             }
         }
 
