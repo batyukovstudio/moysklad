@@ -8,6 +8,7 @@ use MoySklad\Entity\MetaEntity;
 use MoySklad\Http\RequestExecutor;
 use MoySklad\Util\Exception\ApiClientException;
 use MoySklad\Util\Param\Param;
+use MoySklad\Util\Param\StandardFilter;
 
 trait GetEntityEndpoint
 {
@@ -24,6 +25,8 @@ trait GetEntityEndpoint
             throw new Exception('The trait cannot be used outside the EntityClientBase class');
         }
 
-        return RequestExecutor::path($this->getApi(), $this->getPath().$id)->params($params)->get($this->getMetaEntityClass());
+        return RequestExecutor::path($this->getApi(), $this->getPath() . $id)->params($params)->get($this->getMetaEntityClass());
     }
+
+
 }

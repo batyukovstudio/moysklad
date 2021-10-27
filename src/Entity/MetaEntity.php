@@ -41,8 +41,12 @@ class MetaEntity
      * @throws ApiClientException
      * @throws \Exception
      */
-    public function fetch(ApiClient $api): void
+    public function fetch(ApiClient $api = null): void
     {
+        if ($api === null) {
+            $api = new ApiClient();
+        }
+
         if (empty($this->meta->href)) {
             throw new \Exception("The entity has not metadata.");
         }

@@ -195,4 +195,18 @@ class CustomerOrder extends MetaEntity
      * @Type("array<MoySklad\Entity\Document\CustomerOrder>")
      */
     public $purchaseOrders = [];
+
+    /**
+     * @return array|null
+     */
+    public function getPositions(): ?array
+    {
+        $positions = $this->positions->rows;
+        if (null === $positions) {
+            $this->positions->fetch();
+        }
+        $rows = $this->positions->rows;
+
+        return $rows;
+    }
 }
