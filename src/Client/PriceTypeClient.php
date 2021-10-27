@@ -13,7 +13,7 @@ use MoySklad\Util\Param\Param;
 class PriceTypeClient extends EntityClientBase
 {
     use PostEntitiesEndpoint {
-        massUpdate as public traitMassUpdate;
+        PostEntitiesEndpoint::massUpdate as public traitMassUpdate;
     }
 
     /**

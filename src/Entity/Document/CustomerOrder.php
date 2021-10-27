@@ -145,8 +145,8 @@ class CustomerOrder extends MetaEntity
     public $vatSum;
 
     /**
-     * @Type("array<MoySklad\Entity\Document\Position>")
-     * @Generator(type="objectArray", objectQuantity=3)
+     * @Type("MoySklad\Entity\Document\CustomerOrderPositions")
+     * @Generator(type="object")
      */
     public $positions;
 

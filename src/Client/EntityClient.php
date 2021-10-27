@@ -267,7 +267,7 @@ class EntityClient
     /**
      * @return StatusClient
      */
-    public function status() : StatusClient
+    public function status(): StatusClient
     {
         return new StatusClient($this->api);
     }
