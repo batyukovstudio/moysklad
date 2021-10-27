@@ -201,11 +201,11 @@ class CustomerOrder extends MetaEntity
      */
     public function getPositions(): ?array
     {
-        $positions = $this->positions->rows;
-        if (null === $positions) {
+        if (null === $this->positions) {
             $this->positions->fetch();
-            $positions = $this->positions->rows;
         }
+
+        $positions = $this->positions->rows;
 
         /** Подгружается продукты */
         if (0 < count($positions)) {
