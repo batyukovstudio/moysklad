@@ -15,6 +15,7 @@ use MoySklad\Client\Endpoint\PutEntityEndpoint;
 use MoySklad\Entity\AbstractListEntity;
 use MoySklad\Entity\Image;
 use MoySklad\Entity\ListEntity;
+use MoySklad\Entity\MetaEntity;
 use MoySklad\Entity\Product\Product;
 use MoySklad\Http\RequestExecutor;
 use MoySklad\Util\Exception\ApiClientException;
@@ -43,6 +44,33 @@ class ProductClient extends EntityClientBase
         parent::__construct($api, '/entity/product/');
     }
 
+
+    /**
+     * Ищет строго одну позицию. Для абсолюнтого поиска.
+     *
+     * Если находит несколько — null
+     *
+     * @param string $name
+     * @param bool $strict
+     * @return MetaEntity|null
+     * @throws ApiClientException
+     */
+    public function getByCode(string $code): ?Product
+    {
+
+        $params = [StandardFilter::eq('code', $code)];
+
+
+        /** @var AbstractListEntity $list */
+        $list = $this->getList($params);
+
+        $rows = $list->rows ?? null;
+
+        if (is_countable($rows) && 1 === count($rows)) {
+            $result = $rows[0] ?? null;
+        }
+        return $result ?? null;
+    }
 
     /**
      * @param string $productId
