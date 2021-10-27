@@ -46,7 +46,7 @@ class ApiClient
      */
     public function __construct(string $host = 'online.moysklad.ru', bool $forceHttps = true, array $credentials = null, RequestSenderInterface $client = null)
     {
-        if ($credentials === null) {
+        if ($credentials === null && function_exists('config')) {
             $credentials['login'] = config('services.moysklad.login');
             $credentials['password'] = config('services.moysklad.password');
             $credentials['token'] = config('services.moysklad.token');

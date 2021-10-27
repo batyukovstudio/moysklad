@@ -73,12 +73,23 @@ class CustomerOrderClient extends EntityClientBase
             $this->getApi(),
             $this->getPath() . '?' . http_build_query(['search' => $search])
         )
-             ->params($params)
-             ->get(ListEntity::class);
+            ->params($params)
+            ->get(ListEntity::class);
 
         return $listEntity;
     }
 
+
+    /**
+     * @param string $taskId
+     * @param string $taskNoteId
+     * @throws ApiClientException
+     * @throws \Exception
+     */
+    public function deletePosition(string $orderId, string $positionId): void
+    {
+        RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $positionId)->delete();
+    }
 
 
     /**
