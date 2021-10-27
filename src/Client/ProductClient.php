@@ -12,12 +12,14 @@ use MoySklad\Client\Endpoint\GetMetadataEndpoint;
 use MoySklad\Client\Endpoint\PostEntitiesEndpoint;
 use MoySklad\Client\Endpoint\PostEntityEndpoint;
 use MoySklad\Client\Endpoint\PutEntityEndpoint;
+use MoySklad\Entity\AbstractListEntity;
 use MoySklad\Entity\Image;
 use MoySklad\Entity\ListEntity;
 use MoySklad\Entity\Product\Product;
 use MoySklad\Http\RequestExecutor;
 use MoySklad\Util\Exception\ApiClientException;
 use MoySklad\Util\Param\Param;
+use MoySklad\Util\Param\StandardFilter;
 
 class ProductClient extends EntityClientBase
 {
@@ -41,6 +43,7 @@ class ProductClient extends EntityClientBase
         parent::__construct($api, '/entity/product/');
     }
 
+
     /**
      * @param string $productId
      * @param Param[] $params
@@ -50,7 +53,7 @@ class ProductClient extends EntityClientBase
     public function getImagesList(string $productId, array $params = []): ListEntity
     {
         /** @var $listEntity ListEntity */
-        $listEntity = RequestExecutor::path($this->getApi(), $this->getPath().$productId.'/images')->params($params)->get(ListEntity::class);
+        $listEntity = RequestExecutor::path($this->getApi(), $this->getPath() . $productId . '/images')->params($params)->get(ListEntity::class);
 
         return $listEntity;
     }
@@ -67,7 +70,7 @@ class ProductClient extends EntityClientBase
         $className = Image::class;
 
         /** @var Image[] $images */
-        $images = RequestExecutor::path($this->getApi(), $this->getPath().$productId.'/images')->body($image)->post("array<{$className}>");
+        $images = RequestExecutor::path($this->getApi(), $this->getPath() . $productId . '/images')->body($image)->post("array<{$className}>");
 
         return $images;
     }
@@ -83,7 +86,7 @@ class ProductClient extends EntityClientBase
     {
         $className = Image::class;
 
-        return RequestExecutor::path($this->getApi(), $this->getPath().$productId.'/images')->bodyArray($images)->post("array<{$className}>");
+        return RequestExecutor::path($this->getApi(), $this->getPath() . $productId . '/images')->bodyArray($images)->post("array<{$className}>");
     }
 
     /**
@@ -93,7 +96,7 @@ class ProductClient extends EntityClientBase
      */
     public function deleteImage(string $productId, string $imageId): void
     {
-        RequestExecutor::path($this->getApi(), $this->getPath().$productId.'/images/'.$imageId)->delete();
+        RequestExecutor::path($this->getApi(), $this->getPath() . $productId . '/images/' . $imageId)->delete();
     }
 
     /**

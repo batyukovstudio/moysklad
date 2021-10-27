@@ -204,9 +204,16 @@ class CustomerOrder extends MetaEntity
         $positions = $this->positions->rows;
         if (null === $positions) {
             $this->positions->fetch();
+            $positions = $this->positions->rows;
         }
-        $rows = $this->positions->rows;
 
-        return $rows;
+        /** Подгружается продукты */
+        if (0 < count($positions)) {
+            foreach ($positions as $position) {
+                $position->assortment->fetch();
+            }
+        }
+
+        return $positions;
     }
 }

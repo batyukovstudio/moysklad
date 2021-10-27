@@ -13,7 +13,9 @@ use MoySklad\Client\Endpoint\PostEntityEndpoint;
 use MoySklad\Client\Endpoint\PutEntityEndpoint;
 use MoySklad\Entity\AbstractListEntity;
 use MoySklad\Entity\Document\CustomerOrder;
+use MoySklad\Entity\Document\CustomerOrderPosition;
 use MoySklad\Entity\ListEntity;
+use MoySklad\Entity\Note;
 use MoySklad\Http\RequestExecutor;
 use MoySklad\Util\Exception\ApiClientException;
 use MoySklad\Util\Param\Param;
@@ -81,14 +83,41 @@ class CustomerOrderClient extends EntityClientBase
 
 
     /**
-     * @param string $taskId
-     * @param string $taskNoteId
-     * @throws ApiClientException
-     * @throws \Exception
+     * @param string $orderId
+     * @param string $positionId
+     * @throws \MoySklad\Util\Exception\ApiClientException
      */
     public function deletePosition(string $orderId, string $positionId): void
     {
         RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $positionId)->delete();
+    }
+
+    /**
+     * @param string $orderId
+     * @param CustomerOrderPosition $position
+     * @throws \MoySklad\Util\Exception\ApiClientException
+     */
+    public function updatePosition(string $orderId, CustomerOrderPosition $position): void
+    {
+        $className = CustomerOrderPosition::class;
+
+        RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $position->id)->body($position)->put($className);
+    }
+
+
+    /**
+     * @param string $counterpartyId
+     * @param Note $note
+     * @return Note[]
+     * @throws ApiClientException
+     * @throws \Exception
+     */
+    public function createPosition(string $orderId, CustomerOrderPosition $position): array
+    {
+        $className = CustomerOrderPosition::class;
+
+        /** @var Note[] $notes */
+        return RequestExecutor::path($this->getApi(), $this->getPath().$orderId.'/positions')->body($position)->post("array<{$className}>");
     }
 
 

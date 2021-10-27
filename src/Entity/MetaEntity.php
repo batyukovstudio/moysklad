@@ -65,4 +65,5 @@ class MetaEntity
     {
         return $this->meta;
     }
+
 }

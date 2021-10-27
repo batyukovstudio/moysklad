@@ -24,4 +24,6 @@ trait PutEntityEndpoint
 
         return RequestExecutor::path($this->getApi(), $this->getPath().$id)->body($updatedEntity)->put($this->getMetaEntityClass());
     }
+
+
 }
