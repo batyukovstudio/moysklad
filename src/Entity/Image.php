@@ -41,4 +41,6 @@ class Image extends MetaEntity
      * @Generator(type="object")
      */
     public $tiny;
+
+    public $content;
 }

@@ -2,6 +2,7 @@
 
 namespace MoySklad\Client;
 
+use GuzzleHttp\Client;
 use MoySklad\ApiClient;
 use MoySklad\Client\Endpoint\DeleteEntitiesEndpoint;
 use MoySklad\Client\Endpoint\DeleteEntityEndpoint;
@@ -89,9 +90,31 @@ class ProductClient extends EntityClientBase
      * @return int
      * @throws ApiClientException
      */
-    public function getImagesCount(string $productId):int
+    public function getImagesCount(string $productId): int
     {
         return $this->getImagesList($productId)->getMeta()->size;
+    }
+
+    /**
+     * @param string $productId
+     * @param string $url
+     * @return Image[]|null
+     * @throws ApiClientException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function addImageFromUrl(string $productId, string $url): ?array
+    {
+        $client = new Client(['timeout' => 5]);
+        $response = $client->get($url);
+
+        if (200 === $response->getStatusCode()) {
+            $contents = $response->getBody()->getContents();
+            $image = new Image();
+            $image->filename = basename($url);
+            $image->content = base64_encode($contents);
+            $images = $this->createImage($productId, $image);
+        }
+        return $images ?? null;
     }
 
     /**
