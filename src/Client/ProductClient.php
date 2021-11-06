@@ -19,7 +19,6 @@ use MoySklad\Entity\MetaEntity;
 use MoySklad\Entity\Product\Product;
 use MoySklad\Http\RequestExecutor;
 use MoySklad\Util\Exception\ApiClientException;
-use MoySklad\Util\Param\Param;
 use MoySklad\Util\Param\StandardFilter;
 
 class ProductClient extends EntityClientBase
@@ -57,7 +56,6 @@ class ProductClient extends EntityClientBase
      */
     public function getByCode(string $code): ?Product
     {
-
         $params = [StandardFilter::eq('code', $code)];
 
 
@@ -74,7 +72,7 @@ class ProductClient extends EntityClientBase
 
     /**
      * @param string $productId
-     * @param Param[] $params
+     * @param array $params
      * @return ListEntity
      * @throws ApiClientException
      */
@@ -84,6 +82,16 @@ class ProductClient extends EntityClientBase
         $listEntity = RequestExecutor::path($this->getApi(), $this->getPath() . $productId . '/images')->params($params)->get(ListEntity::class);
 
         return $listEntity;
+    }
+
+    /**
+     * @param string $productId
+     * @return int
+     * @throws ApiClientException
+     */
+    public function getImagesCount(string $productId):int
+    {
+        return $this->getImagesList($productId)->getMeta()->size;
     }
 
     /**
