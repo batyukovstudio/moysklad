@@ -105,6 +105,7 @@ class RequestExecutor
         }
 
         $this->auth($api);
+        $this->header('Accept-Encoding','gzip');
     }
 
     /**
