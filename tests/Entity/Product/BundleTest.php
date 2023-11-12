@@ -23,7 +23,7 @@ class BundleTest //extends AbstractEntityTest
         ;
 //"components" : {
 //"meta" : {
-//"href" : "https://online.moysklad.ru/api/remap/1.2/entity/bundle/f6cec9fd-9481-11ea-0a80-04c7003262e0/components",
+//"href" : "https://api.moysklad.ru/api/remap/1.2/entity/bundle/f6cec9fd-9481-11ea-0a80-04c7003262e0/components",
 //"type" : "bundlecomponent",
 //"mediaType" : "application/json",
 //"size" : 1,

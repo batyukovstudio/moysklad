@@ -44,7 +44,7 @@ class ApiClient
      * @param RequestSenderInterface|null $client
      * @throws \Exception
      */
-    public function __construct(string $host = 'online.moysklad.ru', bool $forceHttps = true, array $credentials = null, RequestSenderInterface $client = null)
+    public function __construct(string $host = 'api.moysklad.ru', bool $forceHttps = true, array $credentials = null, RequestSenderInterface $client = null)
     {
         if ($credentials === null && function_exists('config')) {
             $credentials['login'] = config('services.moysklad.login');
