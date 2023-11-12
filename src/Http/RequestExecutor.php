@@ -16,17 +16,17 @@ use MoySklad\Util\StringsTrait;
 /**
  * Класс отправки запросов в JSON-API 1.2
  */
-class RequestExecutor
-{
+class RequestExecutor {
+
     use StringsTrait;
 
-    public const METHOD_GET = 'GET';
-    public const METHOD_POST = 'POST';
-    public const METHOD_PUT = 'PUT';
+    public const METHOD_GET    = 'GET';
+    public const METHOD_POST   = 'POST';
+    public const METHOD_PUT    = 'PUT';
     public const METHOD_DELETE = 'DELETE';
 
     public const TYPE_PATH = 'path';
-    public const TYPE_URL = 'url';
+    public const TYPE_URL  = 'url';
 
     public const API_PATH = "/api/remap/1.2";
 
@@ -49,8 +49,9 @@ class RequestExecutor
      * @var array
      */
     private $headers = [
-        'Content-Type' => 'application/json',
-        'Accept'       => 'application/json;charset=utf-8',
+        'Content-Type'    => 'application/json',
+        'Accept'          => 'application/json;charset=utf-8',
+        'Accept-Encoding' => 'gzip'
     ];
 
     /**
@@ -75,12 +76,13 @@ class RequestExecutor
 
     /**
      * RequestExecutor constructor.
+     *
      * @param ApiClient $api
-     * @param string $url
-     * @param string $type
+     * @param string    $url
+     * @param string    $type
      */
-    private function __construct(ApiClient $api, string $url, string $type = self::TYPE_PATH)
-    {
+    private function __construct(ApiClient $api, string $url, string $type = self::TYPE_PATH) {
+
         $this->serializer = SerializerInstance::getInstance();
 
         switch ($type) {
@@ -91,7 +93,7 @@ class RequestExecutor
 
                 $this->client = $api->getClient();
                 $this->hostApiPath = $api->getHost() . static::API_PATH;
-                $this->url = $this->hostApiPath.$url;
+                $this->url = $this->hostApiPath . $url;
                 break;
             case static::TYPE_URL:
                 if (is_null($api->getClient())) {
@@ -105,36 +107,38 @@ class RequestExecutor
         }
 
         $this->auth($api);
-        $this->header('Accept-Encoding','gzip');
     }
 
     /**
      * @param ApiClient $api
-     * @param string $path
+     * @param string    $path
+     *
      * @return RequestExecutor
      */
-    public static function path(ApiClient $api, string $path): self
-    {
+    public static function path(ApiClient $api, string $path): self {
+
         return new static($api, $path);
     }
 
     /**
      * @param ApiClient $api
-     * @param string $url
+     * @param string    $url
+     *
      * @return RequestExecutor
      */
-    public static function url(ApiClient $api, string $url): self
-    {
+    public static function url(ApiClient $api, string $url): self {
+
         return new static($api, $url, static::TYPE_URL);
     }
 
     /**
      * @param string $key
      * @param string $value
+     *
      * @return RequestExecutor
      */
-    public function header(string $key, string $value): self
-    {
+    public function header(string $key, string $value): self {
+
         if (strlen($key) > 0) {
             $this->headers[$key] = $value;
         }
@@ -145,10 +149,11 @@ class RequestExecutor
     /**
      * @param string $key
      * @param string $value
+     *
      * @return RequestExecutor
      */
-    public function query(string $key, string $value): self
-    {
+    public function query(string $key, string $value): self {
+
         if (strlen($key) > 0) {
             $this->query[$key] = $value;
         }
@@ -158,10 +163,11 @@ class RequestExecutor
 
     /**
      * @param Param[] $params
+     *
      * @return RequestExecutor
      */
-    public function params(array $params): self
-    {
+    public function params(array $params): self {
+
         if (!is_null($this->params) && count($params) > 0) {
             $this->params = $params;
         }
@@ -171,10 +177,11 @@ class RequestExecutor
 
     /**
      * @param MetaEntity[] $body
+     *
      * @return RequestExecutor
      */
-    public function bodyArray(array $body): self
-    {
+    public function bodyArray(array $body): self {
+
         $this->body = $body;
 
         return $this;
@@ -182,10 +189,11 @@ class RequestExecutor
 
     /**
      * @param MetaEntity $body
+     *
      * @return RequestExecutor
      */
-    public function body(MetaEntity $body): self
-    {
+    public function body(MetaEntity $body): self {
+
         $this->body = $body;
 
         return $this;
@@ -193,24 +201,25 @@ class RequestExecutor
 
     /**
      * @param ApiClient $api
+     *
      * @return RequestExecutor
      */
-    private function auth(ApiClient $api): self
-    {
+    private function auth(ApiClient $api): self {
+
         if ($api->getToken()) {
-            $this->headers['Authorization'] = 'Bearer '.$api->getToken();
+            $this->headers['Authorization'] = 'Bearer ' . $api->getToken();
             return $this;
         }
 
-        $this->headers['Authorization'] = 'Basic '.base64_encode($api->getLogin().':'.$api->getPassword());
+        $this->headers['Authorization'] = 'Basic ' . base64_encode($api->getLogin() . ':' . $api->getPassword());
         return $this;
     }
 
     /**
      * @return string
      */
-    private function buildFullUrl(): string
-    {
+    private function buildFullUrl(): string {
+
         if (count($this->params) < 1) {
             return $this->url;
         }
@@ -220,25 +229,26 @@ class RequestExecutor
             $this->query[urlencode($paramType)] = Param::renderParamString($paramType, $this->params);
         }
 
-        return $this->url.'?'.http_build_query($this->query);
+        return $this->url . '?' . http_build_query($this->query);
     }
 
     /**
      * @param Request $request
+     *
      * @return string
      * @throws ApiClientException
      */
-    private function executeRequest(Request $request): string
-    {
+    private function executeRequest(Request $request): string {
+
         try {
             $response = $this->client->sendRequest($request);
 
             if ($response->getStatusCode() != 200 &&
-                    $response->getStatusCode() != 201 &&
-                    $response->getStatusCode() != 204) {
+                $response->getStatusCode() != 201 &&
+                $response->getStatusCode() != 204) {
 
                 throw new ApiClientException(
-                    $request->getMethod().' '.$request->getUri(),
+                    $request->getMethod() . ' ' . $request->getUri(),
                     $response->getStatusCode(),
                     $response->getReasonPhrase()
                 );
@@ -251,17 +261,18 @@ class RequestExecutor
                 $message .= ' Response content: ' . $e->getResponse()->getBody()->getContents();
             }
 
-            throw new ApiClientException($request->getMethod().' '.$request->getUri(), $e->getCode(), $message);
+            throw new ApiClientException($request->getMethod() . ' ' . $request->getUri(), $e->getCode(), $message);
         }
     }
 
     /**
      * @param string $className
+     *
      * @return MetaEntity|MetaEntity[]
      * @throws ApiClientException
      */
-    public function get(string $className)
-    {
+    public function get(string $className) {
+
         $request = new Request(static::METHOD_GET, $this->buildFullUrl(), $this->headers);
 
         return $this->serializer->deserialize($this->executeRequest($request), $className, SerializerInstance::JSON_FORMAT);
@@ -269,11 +280,13 @@ class RequestExecutor
 
     /**
      * @param string $className
-     * @return MetaEntity|MetaEntity[]|mixed Вообще результат $className не всегда может быть наследником MetaEntity или их массивом
+     *
+     * @return MetaEntity|MetaEntity[]|mixed Вообще результат $className не всегда может быть наследником MetaEntity
+     *                                       или их массивом
      * @throws ApiClientException
      */
-    public function post(string $className)
-    {
+    public function post(string $className) {
+
         $strBody = null;
         if (!is_null($this->body)) {
             $strBody = $this->serializer->serialize($this->body, SerializerInstance::JSON_FORMAT);
@@ -286,11 +299,12 @@ class RequestExecutor
 
     /**
      * @param string $className
+     *
      * @return MetaEntity
      * @throws ApiClientException
      */
-    public function put(string $className): MetaEntity
-    {
+    public function put(string $className): MetaEntity {
+
         $strBody = null;
         if (!is_null($this->body)) {
             $strBody = $this->serializer->serialize($this->body, SerializerInstance::JSON_FORMAT);
@@ -304,8 +318,8 @@ class RequestExecutor
     /**
      * @throws ApiClientException
      */
-    public function delete(): void
-    {
+    public function delete(): void {
+
         $request = new Request(static::METHOD_DELETE, $this->buildFullUrl(), $this->headers);
 
         $this->executeRequest($request);
