@@ -158,4 +158,19 @@ class Counterparty extends MetaEntity
      * @Type("string")
      */
     public $phone;
+
+    /**
+     * @Type("string")
+     */
+    public $email;
+
+    /**
+     * @Type("string")
+     */
+    public $description;
+
+    /**
+     * @Type("int")
+     */
+    public $externalCode;
 }
