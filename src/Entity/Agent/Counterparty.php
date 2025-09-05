@@ -170,7 +170,7 @@ class Counterparty extends MetaEntity
     public $description;
 
     /**
-     * @Type("int")
+     * @Type("string")
      */
     public $externalCode;
 }
