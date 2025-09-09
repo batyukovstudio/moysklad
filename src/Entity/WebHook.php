@@ -30,4 +30,10 @@ class WebHook extends MetaEntity
      * @Type("bool")
      */
     public $enabled;
+
+
+    /**
+     * @Type("string")
+     */
+    public $diffType;
 }

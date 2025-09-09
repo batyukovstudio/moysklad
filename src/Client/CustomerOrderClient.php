@@ -15,6 +15,7 @@ use MoySklad\Entity\AbstractListEntity;
 use MoySklad\Entity\Document\CustomerOrder;
 use MoySklad\Entity\Document\CustomerOrderPosition;
 use MoySklad\Entity\ListEntity;
+use MoySklad\Entity\MetaEntity;
 use MoySklad\Entity\Note;
 use MoySklad\Http\RequestExecutor;
 use MoySklad\Util\Exception\ApiClientException;
@@ -85,34 +86,35 @@ class CustomerOrderClient extends EntityClientBase
     /**
      * @param string $orderId
      * @param string $positionId
-     * @throws \MoySklad\Util\Exception\ApiClientException
+     * @return void
+     * @throws ApiClientException
      */
-    public function deletePosition(string $orderId, string $positionId): void
+    public function deletePosition(string $orderId, string $positionId):void
     {
-        RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $positionId)->delete();
+         RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $positionId)->delete();
     }
 
     /**
      * @param string $orderId
      * @param CustomerOrderPosition $position
-     * @throws \MoySklad\Util\Exception\ApiClientException
+     * @return \MoySklad\Entity\MetaEntity
+     * @throws ApiClientException
      */
-    public function updatePosition(string $orderId, CustomerOrderPosition $position): void
+    public function updatePosition(string $orderId, CustomerOrderPosition $position):MetaEntity
     {
         $className = CustomerOrderPosition::class;
 
-        RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $position->id)->body($position)->put($className);
+        return RequestExecutor::path($this->getApi(), $this->getPath() . $orderId . '/positions/' . $position->id)->body($position)->put($className);
     }
 
 
     /**
-     * @param string $counterpartyId
-     * @param Note $note
-     * @return Note[]
+     * @param string $orderId
+     * @param CustomerOrderPosition $position
+     * @return mixed|MetaEntity|MetaEntity[]
      * @throws ApiClientException
-     * @throws \Exception
      */
-    public function createPosition(string $orderId, CustomerOrderPosition $position): array
+    public function createPosition(string $orderId, CustomerOrderPosition $position)
     {
         $className = CustomerOrderPosition::class;
 
