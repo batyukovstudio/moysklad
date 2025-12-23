@@ -37,7 +37,7 @@ class CustomerOrderAttribute extends  MetaEntity
     public $type;
 
     /**
-     * @Type("mixed")
+     * @Type("string")
      */
     public $value;
 }
