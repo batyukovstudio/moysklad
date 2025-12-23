@@ -3,16 +3,11 @@
 namespace MoySklad\Entity\Document;
 
 use JMS\Serializer\Annotation\Type;
+use MoySklad\Entity\MetaEntity;
 use MoySklad\Util\Object\Annotation\Generator;
 
-class CustomerOrderAttribute
+class CustomerOrderAttribute extends  MetaEntity
 {
-
-
-    /**
-     * @Type("string")
-     */
-    public $id;
 
     /**
      * @Type("string")
