@@ -42,5 +42,10 @@
     "psr-4": {
       "MoySklad\\Tests\\": "tests/"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "yogarine/doctrine-annotation-autoload": true
+    }
   }
 }
