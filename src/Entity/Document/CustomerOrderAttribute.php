@@ -7,6 +7,13 @@ use MoySklad\Util\Object\Annotation\Generator;
 
 class CustomerOrderAttribute
 {
+
+
+    /**
+     * @Type("string")
+     */
+    public $id;
+
     /**
      * @Type("string")
      * @Generator()
@@ -28,4 +35,14 @@ class CustomerOrderAttribute
      * @Type("string")
      */
     public $fileName;
+
+    /**
+     * @Type("string")
+     */
+    public $type;
+
+    /**
+     * @Type("string")
+     */
+    public $value;
 }
