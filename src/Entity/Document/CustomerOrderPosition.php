@@ -32,7 +32,7 @@ class CustomerOrderPosition   extends MetaEntity
     public $price;
 
     /**
-     * @Type("int")
+     * @Type("string")
      * @Generator(type="negativeInt")
      */
     public $discount;
