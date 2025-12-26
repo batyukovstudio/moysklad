@@ -32,8 +32,8 @@ class CustomerOrderPosition   extends MetaEntity
     public $price;
 
     /**
-     * @Type("string")
-     * @Generator(type="negativeInt")
+     * @Type("float")
+     * @Generator(type="float", min=-100, max=-1)
      */
     public $discount;
 

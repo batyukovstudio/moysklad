@@ -21,8 +21,8 @@ class SalesReturnPosition extends MetaEntity
     public $price;
 
     /**
-     * @Type("int")
-     * @Generator(type="negativeInt")
+     * @Type("float")
+     * @Generator(type="float", min=-100, max=-1)
      */
     public $discount;
 
